@@ -1,12 +1,13 @@
 import {useRef} from 'react'
 import * as gsap from "gsap";
+import {useGSAP} from "@gsap/react";
 
 const renderText = (text, className, baseWeight=400) => {
     return [...text].map((char, i) => (
         <span
             key={i}
             className={className}
-            style={{fontVariationSettings: `'whgt ${baseWeight}`}}>
+            style={{fontVariationSettings: `'wght' ${baseWeight}`}}>
             {char === ""? '\u00A0' : char}
         </span>
     ))
@@ -28,7 +29,7 @@ const  setupTextHover = (container, type)=> {
         return gsap.to(letter, {
             duration,
             ease: 'power2.out',
-            fontVariationSettings: `'whgt ${weight}`,
+            fontVariationSettings: `'wght' ${weight}`,
 
         });
     };
@@ -39,13 +40,23 @@ const  setupTextHover = (container, type)=> {
         letters.forEach((letter) => {
             const {left:l, width:w} = letter.getBoundingClientRect();
             const distance = Math.abs(mouseX -(l-left + w / 2));
+            const intensity = Math.exp(-(distance ** 2)/ 2000);
+
+            animateLetter(letter, min + (max -min) * intensity);
         })
     }
+
+    container.addEventListener("mousemove", handleMouseMove);
 };
 
 export const Welcome = () => {
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
+
+    useGSAP(()=>{
+       setupTextHover(titleRef.current, "title");
+       setupTextHover(subtitleRef.current, "subtitle");
+    }, []);
 
     return <section id="welcome">
         <p ref={subtitleRef}>
