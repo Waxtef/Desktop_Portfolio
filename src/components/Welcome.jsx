@@ -45,8 +45,16 @@ const  setupTextHover = (container, type)=> {
             animateLetter(letter, min + (max -min) * intensity);
         })
     }
+    const handleMouseLeave = () =>
+        letters.forEach((letter) => animateLetter(letter, base, 0.3));
 
     container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return() => {
+        container.addEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseleave", handleMouseLeave);
+    };
 };
 
 export const Welcome = () => {
@@ -54,8 +62,14 @@ export const Welcome = () => {
     const subtitleRef = useRef(null);
 
     useGSAP(()=>{
-       setupTextHover(titleRef.current, "title");
-       setupTextHover(subtitleRef.current, "subtitle");
+       const title_cleanup = setupTextHover(titleRef.current, "title");
+        const subtitle_cleanup = setupTextHover(subtitleRef.current, "subtitle");
+
+        return () => {
+            title_cleanup();
+            subtitle_cleanup();
+        };
+
     }, []);
 
     return <section id="welcome">
