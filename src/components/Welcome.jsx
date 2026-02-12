@@ -80,12 +80,20 @@ export const Welcome = () => {
             100,
             )}
         </p>
-        <h1 ref={titleRef} className="mt-7">{
+        <h1 class="title" ref={titleRef} className="mt-7">{
             renderText("portfolio", "text-9xl italic font-georama")
-        }</h1>
+
+        }
+            <div className="aurora">
+                <div className="aurora__item"></div>
+                <div className="aurora__item"></div>
+                <div className="aurora__item"></div>
+                <div className="aurora__item"></div>
+            </div>
+        </h1>
 
         <div className="small-screen">
-            <p>This portfolio is designed for desktop/tabled screens</p>
+            <p>This portfolio is designed for desktop/tablet screens</p>
         </div>
 
     </section>
