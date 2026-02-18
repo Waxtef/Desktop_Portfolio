@@ -6,6 +6,7 @@ const App = () => {
         <main className="App">
             <Navbar />
             <Welcome/>
+            <Dock/>
         </main>
     )
 }
